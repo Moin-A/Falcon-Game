@@ -304,6 +304,102 @@ function ModVoyage(no, self) {
     document.querySelector(`.${planet.name} button`).classList.toggle("disabled");
   }
 }
+},{}],"utility/helper.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Animation = Animation;
+exports.Filter_planets = exports.Filter_vehicles = exports.Normalizer = void 0;
+
+const Normalizer = data => data.reduce((obj, value) => {
+  let {
+    name
+  } = value;
+  return {
+    [name]: value,
+    ...obj
+  };
+}, {});
+
+exports.Normalizer = Normalizer;
+
+const Filter_vehicles = (vehicleList, value) => {
+  debugger;
+  let filteredlist = Object.values(vehicleList).filter(x => x.max_distance < value.distance);
+
+  for (let x of filteredlist) {
+    debugger;
+    $(`.${x.name.replace(" ", "-")} button`)[0].classList.toggle("aria-disabled");
+    debugger;
+  }
+};
+
+exports.Filter_vehicles = Filter_vehicles;
+
+const Filter_planets = (planetList, max_distance) => {
+  debugger;
+  let filteredlist = planetList.filter(x => x.distance > max_distance);
+
+  for (let x of filteredlist) {
+    $(`.${x.name} button`)[0].classList.toggle("aria-disabled");
+  }
+};
+
+exports.Filter_planets = Filter_planets;
+
+function Animation(name, value, online) {
+  const date = Date.now();
+
+  function Animation() {
+    let obj = {
+      name,
+      value,
+      online
+    };
+    debugger;
+
+    if (date + 1000 < Date.now()) {
+      if (!obj.online) {
+        $(".planets .aria-disabled").parent().removeClass("bg-opacity-60");
+        $(".planets .aria-disabled").removeClass("aria-disabled");
+        $("." + obj.value.name + " button").addClass("aria-disabled");
+      }
+
+      window.scrollTo({ ...$(".vehicles").position(),
+        behavior: "smooth"
+      });
+      return;
+    }
+
+    requestAnimationFrame(Animation);
+  }
+
+  return Animation();
+}
+},{}],"Constants.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.MISSION_PLAN = void 0;
+const MISSION_PLAN = {
+  1: {
+    online: false
+  },
+  2: {
+    online: false
+  },
+  3: {
+    online: false
+  },
+  4: {
+    online: false
+  }
+};
+exports.MISSION_PLAN = MISSION_PLAN;
 },{}],"gamestate.js":[function(require,module,exports) {
 "use strict";
 
@@ -316,22 +412,13 @@ var _initFunc = require("./initFunc");
 
 var _ui = require("./ui");
 
+var _helper = require("./utility/helper");
+
+var _Constants = require("./Constants");
+
 const gameState = {
   MISSION_NO: "1",
-  MISSION_PLAN: {
-    1: {
-      online: false
-    },
-    2: {
-      online: false
-    },
-    3: {
-      online: false
-    },
-    4: {
-      online: false
-    }
-  },
+  MISSION_PLAN: _Constants.MISSION_PLAN,
   planetList: "",
   vehicleList: "",
 
@@ -341,23 +428,11 @@ const gameState = {
     this.planetList = await data;
     response = await fetch("https://findfalcone.herokuapp.com/vehicles");
     data = await response.json();
-    this.vehicleList = data.reduce((obj, value) => {
-      let {
-        name
-      } = value;
-      return {
-        [name]: value,
-        ...obj
-      };
-    }, {});
+    this.vehicleList = (0, _helper.Normalizer)(data);
   },
 
   handleUser(value) {
     //handle user actions
-    const {
-      planet,
-      vehicle
-    } = value;
     this.MISSION_PLAN[this.MISSION_NO] = { ...this.MISSION_PLAN[this.MISSION_NO],
       ...value
     };
@@ -366,8 +441,9 @@ const gameState = {
       online,
       vehicle: vehicleinfo
     } = this.MISSION_PLAN[this.MISSION_NO];
+    debugger;
 
-    switch (Object.keys(value).shift()) {
+    switch (Object.keys(value)[0]) {
       case "planet":
         this.selectPlanet(planetinfo, online);
         break;
@@ -390,13 +466,7 @@ const gameState = {
 
   selectPlanet(value, distance, online) {
     $(".vehicles .aria-disabled").toggleClass("aria-disabled");
-    let filteredlist = Object.values(this.vehicleList).filter(x => x.max_distance < value.distance);
-    debugger;
-
-    for (let x of filteredlist) {
-      $(`.${x.name.replace(" ", "-")} button`)[0].classList.toggle("aria-disabled");
-    }
-
+    (0, _helper.Filter_vehicles)(this.vehicleList, value);
     (0, _ui.ModPlanets)("planet", value, distance, online);
   },
 
@@ -406,13 +476,7 @@ const gameState = {
     max_distance
   }) {
     $(".planets .aria-disabled").toggleClass("aria-disabled");
-    let filteredlist = this.planetList.filter(x => x.distance > max_distance);
-
-    for (let x of filteredlist) {
-      $(`.${x.name} button`)[0].classList.toggle("aria-disabled");
-    }
-
-    debugger;
+    (0, _helper.Filter_planets)(this.planetList, max_distance);
     (0, _ui.ModVehicles)("vehicle", {
       name,
       total_no
@@ -429,7 +493,7 @@ var _default = gameState;
 exports.default = _default;
 const handleUserFunction = gameState.handleUser.bind(gameState);
 exports.handleUserFunction = handleUserFunction;
-},{"./initFunc":"initFunc.js","./ui":"ui.js"}],"init.js":[function(require,module,exports) {
+},{"./initFunc":"initFunc.js","./ui":"ui.js","./utility/helper":"utility/helper.js","./Constants":"Constants.js"}],"init.js":[function(require,module,exports) {
 "use strict";
 
 var _gamestate = _interopRequireWildcard(require("./gamestate"));
@@ -478,7 +542,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62240" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63689" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
