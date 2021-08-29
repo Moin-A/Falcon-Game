@@ -221,6 +221,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Animation = Animation;
 exports.Animation_vehicle = Animation_vehicle;
+exports.Vehicle_toggle_func = Vehicle_toggle_func;
+exports.Edit_MISSION_PLAN = Edit_MISSION_PLAN;
 exports.Filter_planets = exports.Filter_vehicles = exports.Normalizer = void 0;
 
 const Normalizer = data => data.reduce((obj, value) => {
@@ -312,6 +314,35 @@ function Animation_vehicle(value) {
 
   Animation();
 }
+
+var arr = [];
+
+function Vehicle_toggle_func(value, mission_no) {
+  if (arr.mission_no !== mission_no) {
+    arr.shift();
+  }
+
+  if (arr[0] && !arr.includes(value.name)) {
+    document.querySelector(`div.${arr[0].replace(" ", "-")} .total_no`).innerText = "Total No:" + (parseInt(document.querySelector(`div.${arr.shift().replace(" ", "-")} .total_no`).innerText.split(":")[1]) + 1);
+  }
+
+  arr = [...new Set([value.name, ...arr])];
+  arr.mission_no = mission_no;
+}
+
+function Edit_MISSION_PLAN(planet, vehicle, no) {
+  debugger;
+  document.querySelectorAll(".text-xs h3")[no - 1].innerText = planet ? planet.name : "";
+  document.querySelectorAll(".text-xs p")[no - 1].innerText = vehicle ? vehicle.name : "";
+
+  if (planet && vehicle) {
+    document.querySelectorAll("span.rounded-full")[no - 1].classList.toggle("bg-yellow-500");
+    document.querySelectorAll("span.rounded-full")[no - 1].classList.add("bg-green-500", "animate-ping");
+    document.querySelectorAll(".status")[no - 1].innerText = "online";
+    $(".aria-disabled").toggleClass("aria-disabled");
+    document.querySelector(`.${planet.name} button`).classList.toggle("disabled");
+  }
+}
 },{}],"ui.js":[function(require,module,exports) {
 "use strict";
 
@@ -328,19 +359,8 @@ function ModPlanets(name, value, online) {
   (0, _helper.Animation)(name, value, online);
 }
 
-var arr = [];
-
 function ModVehicles(name, value, mission_no) {
-  if (arr.mission_no !== mission_no) {
-    arr.shift();
-  }
-
-  if (arr[0] && !arr.includes(value.name)) {
-    document.querySelector(`div.${arr[0].replace(" ", "-")} .total_no`).innerText = "Total No:" + (parseInt(document.querySelector(`div.${arr.shift().replace(" ", "-")} .total_no`).innerText.split(":")[1]) + 1);
-  }
-
-  arr = [...new Set([value.name, ...arr])];
-  arr.mission_no = mission_no;
+  (0, _helper.Vehicle_toggle_func)(value, mission_no);
   (0, _helper.Animation_vehicle)(value);
 }
 
@@ -349,16 +369,7 @@ function ModVoyage(no, self) {
     planet,
     vehicle
   } = self[no];
-  document.querySelectorAll(".text-xs h3")[no - 1].innerText = planet ? planet.name : "";
-  document.querySelectorAll(".text-xs p")[no - 1].innerText = vehicle ? vehicle.name : "";
-
-  if (planet && vehicle) {
-    document.querySelectorAll("span.rounded-full")[no - 1].classList.toggle("bg-yellow-500");
-    document.querySelectorAll("span.rounded-full")[no - 1].classList.add("bg-green-500", "animate-ping");
-    document.querySelectorAll(".status")[no - 1].innerText = "online";
-    $(".aria-disabled").toggleClass("aria-disabled");
-    document.querySelector(`.${planet.name} button`).classList.toggle("disabled");
-  }
+  (0, _helper.Edit_MISSION_PLAN)(planet, vehicle, no);
 }
 },{"./utility/helper":"utility/helper.js"}],"Constants.js":[function(require,module,exports) {
 "use strict";
