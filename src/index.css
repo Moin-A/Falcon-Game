@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer utilities {
+  .fill-mode {
+    animation-fill-mode: both !important;
+  }
+  .aria-disabled {
+    display: none !important;
+  }
+  .disabled {
+    display: none !important;
+  }
+}
