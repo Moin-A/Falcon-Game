@@ -44,3 +44,25 @@ export function Animation(name, value, online) {
   }
   return Animation();
 }
+
+export function Animation_vehicle(value) {
+  const date = Date.now();
+  function Animation() {
+    let { name, total_no } = value;
+    $(`.${name} .total_no`)[0].style.display =
+      parseFloat($(`.${name} .total_no`)[0].innerText.split(":")[1]) == 0
+        ? "none!important"
+        : "block!important";
+
+    if (date + 1000 < Date.now()) {
+      window.scrollTo({ ...$(".planets").position(), behavior: "smooth" });
+      $(`.${name.replace(" ", "-")} .total_no`)[0].innerText = `Total_no: ${
+        total_no - 1
+      }`;
+
+      return;
+    }
+    requestAnimationFrame(Animation);
+  }
+  Animation();
+}
