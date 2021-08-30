@@ -66,6 +66,21 @@ const gameState = {
     popultateplanetlist("planetlist", this.planetList);
     popultatvehiclelist("vehiclelist", Object.values(this.vehicleList));
   },
+  loaderon() {
+    debugger;
+    $("body").loadingModal({
+      position: "auto",
+      text: "",
+      color: "#fff",
+      opacity: "0.7",
+      backgroundColor: "rgba(37, 37, 19, 1)",
+      animation: "wanderingCubes",
+    });
+  },
+  loaderoff() {
+    $("body").loadingModal("hide");
+    $("body").loadingModal("destroy");
+  },
 };
 
 export default gameState;

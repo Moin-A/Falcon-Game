@@ -7,11 +7,11 @@
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css">
     <!-- Add the slick-theme.css if you want default styling -->
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css">
-
+    <link rel="stylesheet" href="/jquery.loadingModal.min.af435c14.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Fox Game</title>
-  <script src="/src.9ad09f98.js"></script></head>
+  <script src="/src.9ad09f98.js"></script><script src="/jquery.loadingModal.min.af435c14.js"></script></head>
   <body>
     <div>
       <div class="absolute bg-yellow-200 h-full inset-0 w-full">
@@ -122,6 +122,29 @@
           </div>
         </div>
       </div>
+      <dialog id="myModal" class="h-auto w-11/12 md:w-1/2 p-5 bg-white rounded-md">
+        <div class="flex flex-col w-full h-auto">
+          <!-- Header -->
+          <div class="flex w-full h-auto justify-center items-center">
+            <div class="flex w-10/12 h-auto py-3 justify-center items-center text-2xl font-bold">
+              Modal Header
+            </div>
+            <div onclick="document.getElementById('myModal').close();" class="flex w-1/12 h-auto justify-center cursor-pointer">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </div>
+            <!--Header End-->
+          </div>
+          <!-- Modal Content-->
+          <div class="flex w-full h-auto py-10 px-2 justify-center items-center bg-gray-200 rounded text-center text-gray-500">
+            This is a text inside the modal. You can add your content here.
+          </div>
+          <!-- End of Modal Content-->
+        </div>
+      </dialog>
+      <script src="/jquery.loadingModal.min.cc1652dc.js"></script>
       <script src="/init.9d6cb373.js"></script>
 
       <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
