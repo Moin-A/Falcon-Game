@@ -1,4 +1,4 @@
-import gameState, { handleUserFunction } from "./gamestate";
+import gameState, { handleUserFunction, handleSubmit } from "./gamestate";
 import { initButtons, initslider } from "./initFunc";
 
 async function init() {
@@ -6,7 +6,7 @@ async function init() {
   await gameState.fetchApi();
   gameState.populate();
   initslider();
-  initButtons(handleUserFunction);
+  initButtons(handleUserFunction, handleSubmit);
   gameState.loaderoff();
 }
 

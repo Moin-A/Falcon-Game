@@ -28,10 +28,13 @@ const gameState = {
 
   handleUser(value) {
     //handle user actions
-    this.MISSION_PLAN[this.MISSION_NO] = {
-      ...this.MISSION_PLAN[this.MISSION_NO],
-      ...value,
-    };
+
+    if (value.submit !== "Submit") {
+      this.MISSION_PLAN[this.MISSION_NO] = {
+        ...this.MISSION_PLAN[this.MISSION_NO],
+        ...value,
+      };
+    }
 
     let {
       planet: planetinfo,
@@ -45,6 +48,9 @@ const gameState = {
         break;
       case "vehicle":
         this.selectVehicle(vehicleinfo, online);
+        break;
+      case "submit":
+        this.handleSubmit();
         break;
     }
 
@@ -60,13 +66,12 @@ const gameState = {
     }
 
     if (this.MISSION_NO == 5) {
-      debugger;
       Enable_Submit_button();
-      this.handleSubmit();
     }
   },
 
   async handleSubmit() {
+    debugger;
     let response = await fetch("https://findfalcone.herokuapp.com/token", {
       method: "POST",
       headers: { Accept: "application/json" },
@@ -111,5 +116,5 @@ const gameState = {
 };
 
 export default gameState;
-
+export const handleSubmit = gameState.handleSubmit.bind(gameState);
 export const handleUserFunction = gameState.handleUser.bind(gameState);

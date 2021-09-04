@@ -40,7 +40,7 @@ module.exports = {
     extend: {
       animation: ["hover", "focus", "active"],
       opacity: ["disabled"],
-      pointer: ["disabled"],
+      cursor: ["disabled"],
     },
   },
   plugins: [],

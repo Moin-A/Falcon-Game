@@ -48,7 +48,7 @@ export function Animation(name, value, online) {
 export function Animation_vehicle(value) {
   const date = Date.now();
   function Animation() {
-    let { name, total_no } = value;
+    let { name } = value;
     $(`.${name} .total_no`)[0].style.display =
       parseFloat($(`.${name} .total_no`)[0].innerText.split(":")[1]) == 0
         ? "none!important"
@@ -56,10 +56,11 @@ export function Animation_vehicle(value) {
 
     if (date + 1000 < Date.now()) {
       window.scrollTo({ ...$(".planets").position(), behavior: "smooth" });
-      $(`.${name.replace(" ", "-")} .total_no`)[0].innerText = `Total_no: ${
-        total_no - 1
-      }`;
+      let tag = $(`.${name.replace(" ", "-")} .total_no`);
+      let button = $(`.${name.replace(" ", "-")} button`);
 
+      tag[0].innerText = `Total No :${Number(tag[0].innerText[10]) - 1}`;
+      button.attr("disabled", tag[0].innerText[10] == 0);
       return;
     }
     requestAnimationFrame(Animation);
@@ -73,16 +74,17 @@ export function Vehicle_toggle_func(value, mission_no) {
     arr.shift();
   }
   if (arr[0] && !arr.includes(value.name)) {
-    document.querySelector(
-      `div.${arr[0].replace(" ", "-")} .total_no`
-    ).innerText =
-      "Total No:" +
-      (parseInt(
-        document
-          .querySelector(`div.${arr.shift().replace(" ", "-")} .total_no`)
-          .innerText.split(":")[1]
+    let tag = $(`div.${arr[0].replace(" ", "-")} .total_no`)[0];
+    let button = $(`div.${arr[0].replace(" ", "-")} button`);
+    debugger;
+    tag.innerText =
+      "Total No: " +
+      (Number(
+        $(`div.${arr.shift().replace(" ", "-")} .total_no`)[0].innerText[10]
       ) +
         1);
+    debugger;
+    button.attr("disabled", tag.innerText[10] == 0);
   }
 
   arr = [...new Set([value.name, ...arr])];
@@ -137,10 +139,4 @@ export async function fetch_result(data) {
   });
   let newdata = await response.json();
   return await newdata;
-  // .then(function (response) {
-  //   return response.json();
-  // })
-  // .then(function (data) {
-
-  // });
 }
