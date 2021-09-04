@@ -1,5 +1,8 @@
 export function initButtons(handleUser) {
   //handle user interaction
+  window.addEventListener("popstate", (e) => {
+    $(".inherit div.min-h-screen").toggleClass("hidden");
+  });
   $(".buttons").on("click", function buttonclick({ target }) {
     handleUser({ [$(this).attr("name")]: JSON.parse($(this).val()) });
   });

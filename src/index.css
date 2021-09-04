@@ -11,4 +11,7 @@
   .disabled {
     display: none !important;
   }
+  button:disabled {
+    opacity: 50%;
+  }
 }

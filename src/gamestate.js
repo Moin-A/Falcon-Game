@@ -1,6 +1,13 @@
 import { popultateplanetlist, popultatvehiclelist } from "./initFunc";
 import { ModPlanets, ModVehicles, ModVoyage } from "./ui";
-import { Normalizer, Filter_vehicles, Filter_planets } from "./utility/helper";
+import {
+  Normalizer,
+  Filter_vehicles,
+  Filter_planets,
+  Enable_Submit_button,
+  Normalize_request_bdy,
+  fetch_result,
+} from "./utility/helper";
 import { MISSION_PLAN } from "./Constants";
 
 const gameState = {
@@ -10,6 +17,7 @@ const gameState = {
   vehicleList: "",
 
   async fetchApi() {
+    debugger;
     let response = await fetch("https://findfalcone.herokuapp.com/planets");
     let data = await response.json();
     this.planetList = await data;
@@ -30,7 +38,7 @@ const gameState = {
       online,
       vehicle: vehicleinfo,
     } = this.MISSION_PLAN[this.MISSION_NO];
-    debugger;
+
     switch (Object.keys(value)[0]) {
       case "planet":
         this.selectPlanet(planetinfo, online);
@@ -41,6 +49,7 @@ const gameState = {
     }
 
     if (vehicleinfo && planetinfo) {
+      debugger;
       this.MISSION_PLAN[this.MISSION_NO].online = true;
     }
 
@@ -49,6 +58,25 @@ const gameState = {
     if (vehicleinfo && planetinfo) {
       this.MISSION_NO++;
     }
+
+    if (this.MISSION_NO == 5) {
+      debugger;
+      Enable_Submit_button();
+      this.handleSubmit();
+    }
+  },
+
+  async handleSubmit() {
+    let response = await fetch("https://findfalcone.herokuapp.com/token", {
+      method: "POST",
+      headers: { Accept: "application/json" },
+    });
+    let { token } = await response.json();
+    const data = Normalize_request_bdy(Object.values(this.MISSION_PLAN), token);
+    let moin = await fetch_result(data);
+    $(".inherit div.min-h-screen").toggleClass("hidden");
+    window.history.pushState({ data: "moin" }, "New Page Title", "/result");
+    alert(moin.status);
   },
 
   selectPlanet(value, distance, online) {
@@ -67,7 +95,6 @@ const gameState = {
     popultatvehiclelist("vehiclelist", Object.values(this.vehicleList));
   },
   loaderon() {
-    debugger;
     $("body").loadingModal({
       position: "auto",
       text: "",

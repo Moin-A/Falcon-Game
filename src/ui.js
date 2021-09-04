@@ -16,5 +16,6 @@ export function ModVehicles(name, value, mission_no) {
 
 export function ModVoyage(no, self) {
   const { planet, vehicle } = self[no];
+
   Edit_MISSION_PLAN(planet, vehicle, no);
 }

@@ -4,11 +4,28 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
+      keyframes: {
+        wiggle: {
+          "0%, 100%": {
+            transform: "rotate(0deg)",
+            transform: "scale(1)",
+            transform: "translateY(0px)",
+          },
+          "50%": {
+            transform: "rotate(10deg)",
+            transform: "scale(1.5)",
+            transform: "translateY(10px)",
+          },
+        },
+      },
+
       height: {
         fit: "fit-content",
+        "fit-screen": "79%",
       },
       animation: {
         "spin-slow": "ping 1s cubic-bezier(0, 0, 0.2, 1) 1;",
+        wiggle: "wiggle 1s ease-in-out infinite;",
       },
       keyframes: {
         "spin-slow": {
@@ -22,6 +39,8 @@ module.exports = {
   variants: {
     extend: {
       animation: ["hover", "focus", "active"],
+      opacity: ["disabled"],
+      pointer: ["disabled"],
     },
   },
   plugins: [],

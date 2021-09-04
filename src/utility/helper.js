@@ -5,32 +5,32 @@ export const Normalizer = (data) =>
   }, {});
 
 export const Filter_vehicles = (vehicleList, value) => {
-  debugger;
   let filteredlist = Object.values(vehicleList).filter(
     (x) => x.max_distance < value.distance
   );
   for (let x of filteredlist) {
-    debugger;
     $(`.${x.name.replace(" ", "-")} button`)[0].classList.toggle(
       "aria-disabled"
     );
-    debugger;
   }
 };
 
 export const Filter_planets = (planetList, max_distance) => {
-  debugger;
   let filteredlist = planetList.filter((x) => x.distance > max_distance);
   for (let x of filteredlist) {
     $(`.${x.name} button`)[0].classList.toggle("aria-disabled");
   }
 };
 
+export function Enable_Submit_button() {
+  document.querySelector(".card-content button").removeAttribute("disabled");
+}
+
 export function Animation(name, value, online) {
   const date = Date.now();
   function Animation() {
     let obj = { name, value, online };
-    debugger;
+
     if (date + 1000 < Date.now()) {
       if (!obj.online) {
         $(".planets .aria-disabled").parent().removeClass("bg-opacity-60");
@@ -90,7 +90,6 @@ export function Vehicle_toggle_func(value, mission_no) {
 }
 
 export function Edit_MISSION_PLAN(planet, vehicle, no) {
-  debugger;
   document.querySelectorAll(".text-xs h3")[no - 1].innerText = planet
     ? planet.name
     : "";
@@ -104,11 +103,44 @@ export function Edit_MISSION_PLAN(planet, vehicle, no) {
     document
       .querySelectorAll("span.rounded-full")
       [no - 1].classList.add("bg-green-500", "animate-ping");
-    document.querySelectorAll(".status")[no - 1].innerText = "online";
+    document.querySelectorAll(".status")[no - 1].innerText = "Online";
     $(".aria-disabled").toggleClass("aria-disabled");
 
     document
       .querySelector(`.${planet.name} button`)
       .classList.toggle("disabled");
   }
+}
+
+export function Normalize_request_bdy(data, token) {
+  return data.reduce(
+    (obj, value) => {
+      let { planet, vehicle } = value;
+      let { planet_names, vehicle_names } = obj;
+      return {
+        token,
+        planet_names: [...planet_names, planet.name],
+        vehicle_names: [...vehicle_names, vehicle.name.replace("-", " ")],
+      };
+    },
+    { planet_names: [], vehicle_names: [] }
+  );
+}
+export async function fetch_result(data) {
+  let response = await fetch("https://findfalcone.herokuapp.com/find", {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  let newdata = await response.json();
+  return await newdata;
+  // .then(function (response) {
+  //   return response.json();
+  // })
+  // .then(function (data) {
+
+  // });
 }
