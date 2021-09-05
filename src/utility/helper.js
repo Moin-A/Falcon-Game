@@ -76,14 +76,14 @@ export function Vehicle_toggle_func(value, mission_no) {
   if (arr[0] && !arr.includes(value.name)) {
     let tag = $(`div.${arr[0].replace(" ", "-")} .total_no`)[0];
     let button = $(`div.${arr[0].replace(" ", "-")} button`);
-    debugger;
+
     tag.innerText =
       "Total No: " +
       (Number(
         $(`div.${arr.shift().replace(" ", "-")} .total_no`)[0].innerText[10]
       ) +
         1);
-    debugger;
+
     button.attr("disabled", tag.innerText[10] == 0);
   }
 

@@ -4,3 +4,9 @@ export const MISSION_PLAN = {
   3: { online: false },
   4: { online: false },
 };
+export const gameState = {
+  MISSION_NO: "1",
+  MISSION_PLAN,
+  planetList: "",
+  vehicleList: "",
+};

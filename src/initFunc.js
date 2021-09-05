@@ -1,4 +1,6 @@
-export function initButtons(handleUser, handleSubmit) {
+import { Reset } from "./gamestate";
+import { MISSION_PLAN } from "./Constants";
+export function initButtons(handleUser, handleSubmit, Result) {
   //handle user interaction
   window.addEventListener("popstate", (e) => {
     $(".inherit div.min-h-screen").toggleClass("hidden");
@@ -6,7 +8,16 @@ export function initButtons(handleUser, handleSubmit) {
   $(".buttons").on("click", function buttonclick({ target }) {
     handleUser({ [$(this).attr("name")]: JSON.parse($(this).val()) });
   });
-  $(".submit_button").on("click", ({ target }) => handleSubmit());
+  $(".submit_button").on("click", (e) => {
+    e.preventDefault();
+    if (window.confirm("Are you sure")) {
+      handleSubmit();
+    }
+  });
+  $(".reset").on("click", (e) => {
+    e.preventDefault();
+    Reset(MISSION_PLAN);
+  });
 }
 
 export function initslider() {
@@ -86,7 +97,9 @@ export function popultatvehiclelist(classname, data) {
             </div>
             <div class="p-5">
             <h3 class="text-white text-lg">${current.name}</h3>
-            <p class="text-gray-400 total_no">Total No :${current.total_no}</p>
+            <p data-no=${
+              current.total_no
+            } class="text-gray-400 total_no">Total No :${current.total_no}</p>
             <p class="text-gray-400">Max Distance :${current.max_distance}</p>
             <p class="text-gray-400">Speed :${current.speed}</p>
             </div>
