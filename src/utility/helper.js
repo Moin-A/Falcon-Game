@@ -157,7 +157,11 @@ export function ModifyResultScreen(Search_Outcome) {
   if (Search_Outcome.status == "success") {
     document.querySelector(
       ".result_screen p"
-    ).innerHTML = `The Queen was found in ${Search_Outcome.planet_name}`;
+    ).empty.innerHTML = `The Queen was found in ${Search_Outcome.planet_name}`;
+  }
+
+  if (Search_Outcome.status !== "success") {
+    document.querySelector(".result_screen p").empty.innerHTML = ``;
   }
   window.history.pushState({ data: "moin" }, "New Page Title", "/result");
 }
