@@ -9,8 +9,8 @@ import {
   Filter_vehicles,
   Filter_planets,
   Enable_Submit_button,
-  Normalize_request_bdy,
-  fetch_result,
+  fetch_result as fetch_APi,
+  ModifyResultScreen,
 } from "./utility/helper";
 import { MISSION_PLAN as PLAN } from "./Constants";
 
@@ -68,18 +68,9 @@ const gameState = {
   },
 
   async handleSubmit() {
-    let response = await fetch("https://findfalcone.herokuapp.com/token", {
-      method: "POST",
-      headers: { Accept: "application/json" },
-    });
-    let { token } = await response.json();
-    const data = Normalize_request_bdy(Object.values(this.MISSION_PLAN), token);
-    let moin = await fetch_result(data);
-    document.querySelector(".result_screen h1").innerText == moin.status
-      ? "Failure"
-      : "Success";
-    $(".inherit div.min-h-screen").toggleClass("hidden");
-    window.history.pushState({ data: "moin" }, "New Page Title", "/result");
+    let { token } = await fetch_APi();
+    let Search_Outcome = await fetch_APi(this.MISSION_PLAN, token);
+    ModifyResultScreen(Search_Outcome);
   },
 
   selectPlanet(value, distance, online) {

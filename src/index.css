@@ -14,4 +14,12 @@
   button:disabled {
     opacity: 50%;
   }
+  .bg-hero {
+    /* Reference an image file */
+    background-image: url("./assets/bg.jpeg");
+    color: red;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+  }
 }

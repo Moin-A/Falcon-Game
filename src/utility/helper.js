@@ -128,15 +128,36 @@ export function Normalize_request_bdy(data, token) {
     { planet_names: [], vehicle_names: [] }
   );
 }
-export async function fetch_result(data) {
-  let response = await fetch("https://findfalcone.herokuapp.com/find", {
+
+export async function fetch_result(data, token) {
+  let url = data ? "find" : "token";
+  let Nrlzdata = data ? Normalize_request_bdy(Object.values(data), token) : {};
+
+  let response = await fetch("https://findfalcone.herokuapp.com/" + url, {
     method: "post",
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify(Nrlzdata),
   });
+
   let newdata = await response.json();
+
   return await newdata;
+}
+
+export function ModifyResultScreen(Search_Outcome) {
+  document.querySelector(".result_screen h1").innerText =
+    Search_Outcome.status !== "success"
+      ? "The Mission was a Failure"
+      : "The Mission was a Success";
+  $(".inherit div.min-h-screen").toggleClass("hidden");
+
+  if (Search_Outcome.status == "success") {
+    document.querySelector(
+      ".result_screen p"
+    ).innerHTML = `The Queen was found in ${Search_Outcome.planet_name}`;
+  }
+  window.history.pushState({ data: "moin" }, "New Page Title", "/result");
 }
