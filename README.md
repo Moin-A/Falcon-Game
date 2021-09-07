@@ -1,5 +1,3 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
 ## Steps to run the app
 
 1. Install the dependencies
@@ -15,3 +13,7 @@ About the App
 2. The game is build using OOPS paradigm, here the gamestate.js the state object and the methods,
 3. helper.js has all the utility functions
 4. initfunc.js has all the initialization related functions such as initbutton, initslider etc
+
+## live link for Testing
+
+https://falcon-game.vercel.app/
