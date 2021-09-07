@@ -25,13 +25,13 @@ export function initslider() {
     infinite: false,
     slidesToShow: 2,
     dots: true,
-    infinite: true,
+    infinite: false,
     responsive: [
       {
         breakpoint: 1024,
         settings: {
           slidesToShow: 2,
-          infinite: true,
+          infinite: false,
         },
       },
       {

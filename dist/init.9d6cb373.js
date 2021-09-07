@@ -195,8 +195,8 @@ function initslider() {
     responsive: [{
       breakpoint: 1024,
       settings: {
-        slidesToShow: 1,
-        infinite: true
+        slidesToShow: 2,
+        infinite: false
       }
     }, {
       breakpoint: 600,
@@ -682,7 +682,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64106" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52494" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
