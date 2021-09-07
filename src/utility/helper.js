@@ -167,7 +167,7 @@ export function ModifyResultScreen(Search_Outcome, time) {
   }
 
   if (Search_Outcome.status !== "success") {
-    document.querySelector(".result_screen p").empty.innerHTML = ``;
+    document.querySelector(".result_screen p").innerHTML = ``;
   }
   window.history.pushState({ data: "moin" }, "New Page Title", "/result");
 }
