@@ -632,7 +632,26 @@ video {
   white-space: nowrap;
   border-width: 0;
 }
-
+.fill-mode {
+  animation-fill-mode: both !important;
+}
+.aria-disabled {
+  display: none !important;
+}
+.disabled {
+  display: none !important;
+}
+button:disabled {
+  opacity: 50%;
+}
+.bg-hero {
+  /* Reference an image file */
+  background-image: url("./src/assets/bg.jpeg");
+  color: red;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
 .not-sr-only {
   position: static;
   width: auto;
