@@ -129,6 +129,12 @@ export function Normalize_request_bdy(data, token) {
   );
 }
 
+export function find_totalTime(data) {
+  return data
+    .map(({ planet, vehicle }) => planet.distance / vehicle.speed)
+    .reduce((obj, value) => obj + value);
+}
+
 export async function fetch_result(data, token) {
   let url = data ? "find" : "token";
   let Nrlzdata = data ? Normalize_request_bdy(Object.values(data), token) : {};
@@ -147,7 +153,7 @@ export async function fetch_result(data, token) {
   return await newdata;
 }
 
-export function ModifyResultScreen(Search_Outcome) {
+export function ModifyResultScreen(Search_Outcome, time) {
   document.querySelector(".result_screen h1").innerText =
     Search_Outcome.status !== "success"
       ? "The Mission was a Failure"
@@ -157,7 +163,7 @@ export function ModifyResultScreen(Search_Outcome) {
   if (Search_Outcome.status == "success") {
     document.querySelector(
       ".result_screen p"
-    ).empty.innerHTML = `The Queen was found in ${Search_Outcome.planet_name}`;
+    ).innerHTML = `The Queen was found in ${Search_Outcome.planet_name}. The Mission took ${time} hours`;
   }
 
   if (Search_Outcome.status !== "success") {

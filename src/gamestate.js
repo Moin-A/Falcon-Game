@@ -11,6 +11,7 @@ import {
   Enable_Submit_button,
   fetch_result as fetch_APi,
   ModifyResultScreen,
+  find_totalTime,
 } from "./utility/helper";
 import { MISSION_PLAN as PLAN } from "./Constants";
 
@@ -70,7 +71,8 @@ const gameState = {
   async handleSubmit() {
     let { token } = await fetch_APi();
     let Search_Outcome = await fetch_APi(this.MISSION_PLAN, token);
-    ModifyResultScreen(Search_Outcome);
+    let totaltime = find_totalTime(Object.values(this.MISSION_PLAN));
+    ModifyResultScreen(Search_Outcome, totaltime);
   },
 
   selectPlanet(value, distance, online) {

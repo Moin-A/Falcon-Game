@@ -90,6 +90,7 @@ export function popultatvehiclelist(classname, data) {
               name: current.name.replace(" ", "-"),
               max_distance: current.max_distance,
               total_no: current.total_no,
+              speed: current.speed,
             })} class="buttons cursor-pointer fill-mode focus:animate-spin-slow bg-green-400 rounded-lg p-2 hover:scale-110 text-white opacity-0 transform translate-y-3 group-hover:translate-y-0 group-hover:opacity-100 transition">
             SELECT
             </button>         
